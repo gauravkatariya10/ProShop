@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { resetCart } from "./cartSlice";
+import { useDispatch } from "react-redux";
 
 const initialState = {
   userInfo: localStorage.getItem("userInfo")

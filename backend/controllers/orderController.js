@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Order from "../models/orderModel.js";
+import Product from "../models/productModel.js";
 
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
@@ -18,9 +19,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
   } else {
     const order = new Order({
       orderItems: orderItems.map((x) => ({
-        ...x,
+        name: x.name,
+        qty: x.qty,
+        image: x.image,
+        price: x.price,
         product: x._id,
-        _id: undefined,
       })),
       user: req.user._id,
       shippingAddress,
@@ -31,8 +34,17 @@ const addOrderItems = asyncHandler(async (req, res) => {
       totalPrice,
     });
     const createdOrder = await order.save();
-    console.log("Hello", createdOrder);
-    res.status(200);
+    orderItems.map((x) => updateStocks(x));
+    res.status(200).json(createdOrder);
+  }
+});
+
+//Helper function to update the stock value after order is placed
+const updateStocks = asyncHandler(async (orderProduct) => {
+  const product = await Product.findById(orderProduct._id);
+  if (product) {
+    product.countInStock -= orderProduct.qty;
+    await product.save();
   }
 });
 
@@ -62,6 +74,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
         email_address: res.body.email_address,
       });
     const updatedOrder = await order.save();
+    // console.log(order.orderItems);
     res.status(200).json(updatedOrder);
   } else {
     res.status(404);

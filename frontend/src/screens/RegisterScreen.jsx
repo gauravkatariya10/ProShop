@@ -5,11 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import Loader from "../components/FormContainer";
+
+//storing data in backend
 import { useRegisterMutation } from "../slices/usersApiSlice";
+
+//setting the local storage
 import { setCredtionals } from "../slices/authSlice";
+
 import { toast } from "react-toastify";
+
 function RegisterScreen() {
-  console.log("submit");
   const [email, setEmail] = useState();
   const [name, setName] = useState();
 
@@ -24,6 +29,7 @@ function RegisterScreen() {
   const { userInfo } = useSelector((state) => state.auth);
 
   const { search } = useLocation();
+
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 

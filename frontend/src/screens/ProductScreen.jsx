@@ -42,7 +42,6 @@ function ProductScreen() {
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
-    console.log(qty);
     navigate("/cart");
   };
 

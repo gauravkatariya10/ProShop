@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
 import Search from "./Search";
+import { clearCartItems } from "../slices/cartSlice";
 function Header() {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
@@ -20,6 +21,7 @@ function Header() {
     try {
       await logoutApi().unwrap();
       dispatch(logout());
+      dispatch(clearCartItems());
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -39,7 +41,7 @@ function Header() {
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <FaShoppingCart /> Cart
-                  {cartItems.length > 0 && (
+                  {cartItems?.length > 0 && (
                     <Badge pill bg="success" style={{ marginLeft: "5px" }}>
                       {cartItems.reduce((a, c) => a + c.qty, 0)}
                     </Badge>
@@ -52,11 +54,7 @@ function Header() {
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
-                  {userInfo.isAdmin && (
-                    <LinkContainer to="/dashboard">
-                      <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                    </LinkContainer>
-                  )}
+
                   {userInfo.isAdmin && (
                     <LinkContainer to="/admin/orderlist">
                       <NavDropdown.Item>Orders</NavDropdown.Item>

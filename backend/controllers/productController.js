@@ -2,7 +2,7 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import Product from "../models/productModel.js";
 
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 4;
+  const pageSize = 8;
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
@@ -22,12 +22,13 @@ const getProducts = asyncHandler(async (req, res) => {
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
-const getSearchedProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findOne({ name: req.params.name });
-  if (product) return res.status(200).json(product);
-  res.status(404);
-  throw new Error("Not Found");
-});
+// const getSearchedProduct = asyncHandler(async (req, res) => {
+//   const product = await Product.findOne({ name: req.params.name });
+//   if (product) return res.status(200).json(product);
+//   res.status(404);
+//   throw new Error("Not Found");
+// });
+
 const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) return res.json(product);
@@ -85,7 +86,6 @@ const updateProduct = asyncHandler(async (req, res) => {
 const createProductReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
   const product = await Product.findById(req.params.id);
-  console.log("Working");
   if (product) {
     const alreadyReviewd = product.reviews.find(
       (review) => review.user.toString() === req.user._id.toString()

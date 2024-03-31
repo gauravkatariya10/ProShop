@@ -27,17 +27,17 @@ const PlaceOrderScreen = () => {
   const dispatch = useDispatch();
   const placeOrderHandler = async () => {
     try {
-      // const res = await createOrder({
-      //   orderItems: cart.cartItems,
-      //   shippingAddress: cart.shippingAddress,
-      //   paymentMethod: cart.paymentMethod,
-      //   itemsPrice: cart.itemsPrice,
-      //   shippingPrice: cart.shippingPrice,
-      //   taxPrice: cart.taxPrice,
-      //   totalPrice: cart.totalPrice,
-      // }).unwrap();
+      const res = await createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      }).unwrap();
       dispatch(clearCartItems());
-      navigate(`/order/6596795546242aa43ae93bdc`);
+      navigate(`/order/${res._id}`);
     } catch (err) {
       toast.error(err);
     }

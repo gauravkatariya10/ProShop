@@ -7,8 +7,10 @@ import { toast } from "react-toastify";
 import Message from "../components/Message";
 import { LinkContainer } from "react-router-bootstrap";
 import Loader from "../components/Loader";
+
 import { useProfileMutation } from "../slices/usersApiSlice";
 import { setCredtionals } from "../slices/authSlice";
+
 import { useGetMyOrdersQuery } from "../slices/ordersApiSlice";
 
 function ProfileScreen() {
@@ -115,10 +117,10 @@ function ProfileScreen() {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {orders?.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.createdAt?.substring(0, 10)}</td>
                   <td>{order.totalPrice}</td>
                   <td>
                     {order.isPaid ? (
@@ -129,7 +131,7 @@ function ProfileScreen() {
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
+                      order.deliveredAt?.substring(0, 10)
                     ) : (
                       <FaTimes style={{ color: "red" }}></FaTimes>
                     )}
