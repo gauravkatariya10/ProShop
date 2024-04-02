@@ -14,13 +14,10 @@ function UserListScreen() {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
   const deleteHandler = async (id) => {
-    if (window.confirm("delete product")) {
+    if (window.confirm("delete User")) {
       try {
-        console.log("Before deleteProduct");
         await deleteUser(id);
-        console.log("After deleteProduct, before refetch");
         refetch();
-        console.log("After refetch");
       } catch (err) {
         console.error(err);
         toast.error(err.message);

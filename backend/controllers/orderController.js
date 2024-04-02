@@ -1,6 +1,7 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Order from "../models/orderModel.js";
 import Product from "../models/productModel.js";
+import { checkInventory } from "../utils/checkInventory.js";
 
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
@@ -12,10 +13,15 @@ const addOrderItems = asyncHandler(async (req, res) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-
+  const valid = await checkInventory(orderItems);
+  console.log("valid", valid);
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No Order Items");
+  } else if (valid) {
+    console.log("called inventory");
+    res.status(400);
+    throw new Error("Product out of stock");
   } else {
     const order = new Order({
       orderItems: orderItems.map((x) => ({

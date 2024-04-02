@@ -8,6 +8,7 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import Loader from "../components/Loader";
 import { useCreateOrderMutation } from "../slices/ordersApiSlice";
 import { clearCartItems } from "../slices/cartSlice";
+import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const PlaceOrderScreen = () => {
   }, [cart.paymentMethod, cart.shippingAddress.address, navigate]);
 
   const dispatch = useDispatch();
+  const checkInventoryStatus = () => {};
   const placeOrderHandler = async () => {
     try {
       const res = await createOrder({
